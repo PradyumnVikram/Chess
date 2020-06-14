@@ -92,7 +92,8 @@ def main():
             if event.type == pygame.QUIT:
                 try:
                     run = False
-                    pygame.quit()
+                    #pygame.quit()
+                    exit(1)
                 except Exception as e:
                     run = False
                     pygame.quit()
@@ -129,8 +130,16 @@ def main():
                     elif count % 2 == 0:
                         finish = get_col_row(board)
                         #('finish', finish)
-                        if count != False:
-                            board, count = chess.move(board, start, finish, count)
+                        
+                        board, count, valid = chess.move(board, start, finish, count)
+                        if valid != False:
+                            ans = chess.won(board)
+                            print(ans)
+                            if ans != False:
+                                text = FONT.render(
+                                    ans, 1, (10, 10, 10))
+                                win.blit(text, (WIDTH - text.get_width() + 200, 395))
+                                run = False
                         else:
                             count += 1
                             if player == 'w':
@@ -138,13 +147,7 @@ def main():
                             elif player == 'b':
                                 player = 'w'
 
-                        ans = chess.won(board)
-                        print(ans)
-                        if ans != False:
-                            text = FONT.render(
-                                ans, 1, (10, 10, 10))
-                            win.blit(text, (WIDTH - text.get_width() + 200, 395))
-                            run = False
+                        
 
                 except Exception as e:
                     count -= 1
