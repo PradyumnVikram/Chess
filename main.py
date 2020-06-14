@@ -1,3 +1,4 @@
+#run this to run the project
 __author__ = 'Pradyumn Vikram'
 #This be the file for the gameplay and displaying stuff
 
