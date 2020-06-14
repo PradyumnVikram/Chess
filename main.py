@@ -23,7 +23,7 @@ pygame.display.set_caption('Chess')
 win = pygame.display.set_mode(win_size)
 MARGIN = 8
 
-#loading images of chess pieces
+#loading images of chess pieces (Cuz.... we need them)
 imgs = {}
 
 for file in os.listdir(os.path.join(root, 'data/')):
