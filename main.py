@@ -108,7 +108,7 @@ def main():
             if pygame.mouse.get_pressed()[0]:
                 text = FONT.render(
                     players[player] + '\'s turn!', 1, (10, 10, 10))
-                print(player)
+                #(player)
                 try:
                     count += 1
 
@@ -134,7 +134,7 @@ def main():
                         board, count, valid = chess.move(board, start, finish, count)
                         if valid != False:
                             ans = chess.won(board)
-                            print(ans)
+                            #(ans)
                             if ans != False:
                                 text = FONT.render(
                                     ans, 1, (10, 10, 10))
