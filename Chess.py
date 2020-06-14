@@ -1,8 +1,10 @@
 __author__ = 'Pradyumn Vikram'
-#This file be the brains of the game
-#All logic and controls in this file
+# This file be the brains of the game
+# All logic and controls in this file
 
-#function to make new board
+# function to make new board
+
+
 def new_board():
     board = [['br', 'bh', 'bb', 'bq', 'bk', 'bb', 'bh', 'br'],
              ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
@@ -14,7 +16,9 @@ def new_board():
              ['wr', 'wh', 'wb', 'wq', 'wk', 'wb', 'wh', 'wr']]
     return board
 
-#check if someone won
+# check if someone won
+
+
 def won(board):
     val = 0
     for row in board:
@@ -30,7 +34,9 @@ def won(board):
     elif val == -1:
         return 'Black won!'
 
-#move the piece
+# move the piece
+
+
 def move(board, start, finish, count):
     if start != None:
         diffx = start[0] - finish[0]
@@ -42,9 +48,9 @@ def move(board, start, finish, count):
             else:
                 board[start[0]][start[1]] = 'es'
             board[finish[0]][finish[1]] = piece
-            return board, count
+            return board, count, True
         else:
-            return board, False
+            return board, count, False
 
 # check for:
 # bishop - b
@@ -54,9 +60,16 @@ def move(board, start, finish, count):
 # rook - r
 # pawn - p
 
-#check if move is valid... used in move()
+# check if move is valid... used in move()
+
+
 def is_valid(board, piece, start, finish):
     if piece[1] == 'p':
+        if abs(finish[0] - start[0]) == 2 and board[finish[0]][finish[1]] == 'es':
+            if piece[0] == 'b' and finish[0] > start[0] and start[0] == 1:
+                return True
+            elif piece[0] == 'w' and finish[0] < start[0] and start[0] == 6:
+                return True
         if abs(finish[0] - start[0]) == 1 and board[finish[0]][finish[1]] == 'es':
             if finish[1] == start[1]:
                 if piece[0] == 'b' and finish[0] > start[0]:
@@ -64,7 +77,7 @@ def is_valid(board, piece, start, finish):
                 elif piece[0] == 'w' and finish[0] < start[0]:
                     return True
         elif abs(finish[1] - start[1]) == 1 and abs(finish[0] - start[0]) == 1 and board[finish[0]][finish[1]] != 'es' and board[finish[0]][finish[1]][0] != piece[0]:
-            #('in', board[finish[0]][finish[1]])
+            # ('in', board[finish[0]][finish[1]])
             if piece[0] == 'b' and finish[0] > start[0]:
                 return True
             elif piece[0] == 'w' and finish[0] < start[0]:
