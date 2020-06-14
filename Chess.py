@@ -42,7 +42,9 @@ def move(board, start, finish, count):
             else:
                 board[start[0]][start[1]] = 'es'
             board[finish[0]][finish[1]] = piece
-    return board, count
+            return board, count
+        else:
+            return board, False
 
 # check for:
 # bishop - b
