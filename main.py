@@ -1,4 +1,4 @@
-#run this to run the project
+#run this to run project
 __author__ = 'Pradyumn Vikram'
 #This be the file for the gameplay and displaying stuff
 
@@ -24,7 +24,7 @@ pygame.display.set_caption('Chess')
 win = pygame.display.set_mode(win_size)
 MARGIN = 8
 
-#loading images of chess pieces (Cuz.... we need them)
+#loading images of chess pieces
 imgs = {}
 
 for file in os.listdir(os.path.join(root, 'data/')):
@@ -119,6 +119,7 @@ def main():
                             player = 'w'
                         if board[start[0]][start[1]] == 'es' or board[start[0]][start[1]][0] == player:
                             start = None
+                            count += 1
                             if player == 'w':
                                 player = 'b'
                             elif player == 'b':
@@ -128,7 +129,14 @@ def main():
                     elif count % 2 == 0:
                         finish = get_col_row(board)
                         #('finish', finish)
-                        board, count = chess.move(board, start, finish, count)
+                        if count != False:
+                            board, count = chess.move(board, start, finish, count)
+                        else:
+                            count += 1
+                            if player == 'w':
+                                player = 'b'
+                            elif player == 'b':
+                                player = 'w'
 
                         ans = chess.won(board)
                         print(ans)
