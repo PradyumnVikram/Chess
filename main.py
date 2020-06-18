@@ -1,13 +1,13 @@
-#run this to run project
+# run this to run project
 __author__ = 'Pradyumn Vikram'
-#This be the file for the gameplay and displaying stuff
+# This be the file for the gameplay and displaying stuff
 
-#some imports
+# some imports
 import pygame
-import Chess as chess #this is the file we made which controls logic
+import Chess as chess  # this is the file we made which controls logic
 import os
 
-#Declaring some(ALOT) of variables
+# Declaring some(ALOT) of variables
 root = os.path.dirname(__file__)
 
 pygame.init()
@@ -24,7 +24,7 @@ pygame.display.set_caption('Chess')
 win = pygame.display.set_mode(win_size)
 MARGIN = 8
 
-#loading images of chess pieces
+# loading images of chess pieces
 imgs = {}
 
 for file in os.listdir(os.path.join(root, 'data/')):
@@ -33,29 +33,51 @@ for file in os.listdir(os.path.join(root, 'data/')):
 
 players = {'w': 'White', 'b': 'Black'}
 
-#declaring redraw window function
+# declaring redraw window function
+
+
 def redraw_window(screen, grid, player, text):
     win.fill((160, 82, 45))
     win.blit(text, (WIDTH - text.get_width() + 200, 395))
     for row in range(n_size):
         for col in range(n_size):
             color = WHITE
-            '''
+
             if row % 2 == 0:
                 if col % 2 != 0:
                     color = BLACK
             elif row % 2 != 0:
                 if col % 2 == 0:
-                    color = BLACK '''
+                    color = BLACK
             if grid[row][col] in imgs.keys():
+
                 img = imgs[grid[row][col]]
                 img = pygame.transform.scale(img, (WIDTH, HEIGHT))
+                if row % 2 == 0:
+                    if col % 2 != 0:
+                        pixels = pygame.PixelArray(img)
+                        pixels.replace(pygame.Color(
+                            255, 255, 255, 255), pygame.Color(193, 154, 107, 0))
+                        del pixels
+                elif row % 2 != 0:
+                    if col % 2 == 0:
+
+                        pixels = pygame.PixelArray(img)
+                        pixels.replace(pygame.Color(
+                            255, 255, 255, 255), pygame.Color(193, 154, 107, 0))
+                        del pixels
                 rect = img.get_rect()
                 rect.x = ((MARGIN + WIDTH)*col + MARGIN)
                 rect.y = ((MARGIN + HEIGHT)*row + MARGIN)
 
                 screen.blit(img, rect)
             else:
+                if row % 2 == 0:
+                    if col % 2 != 0:
+                        color = BLACK
+                elif row % 2 != 0:
+                    if col % 2 == 0:
+                        color = BLACK
                 pygame.draw.rect(win, color, [(MARGIN + WIDTH)*col + MARGIN,
                                               (MARGIN + HEIGHT)*row + MARGIN,
                                               WIDTH,
@@ -63,7 +85,9 @@ def redraw_window(screen, grid, player, text):
     pygame.display.flip()
     pygame.display.update()
 
-#converting click to board co-ordinate
+# converting click to board co-ordinate
+
+
 def get_col_row(board):
     pos = pygame.mouse.get_pos()
     col = pos[0]//(WIDTH+MARGIN)
@@ -74,16 +98,19 @@ def get_col_row(board):
     except IndexError as e:
         pass
 
-#main function... Duh!
+# main function... Duh!
+
+
 def main():
-    #declaring variables (Again)
+    # declaring variables (Again)
     clock = pygame.time.Clock()
     run = True
     board = chess.new_board()
     player = 'w'
     count = 0
     text = FONT.render('White\'s turn!', 1, (10, 10, 10))
-    #running the game
+    start = None
+    # running the game
     while run:
         clock.tick(60)
         redraw_window(win, board, player, text)
@@ -92,7 +119,7 @@ def main():
             if event.type == pygame.QUIT:
                 try:
                     run = False
-                    #pygame.quit()
+                    # pygame.quit()
                     exit(1)
                 except Exception as e:
                     run = False
@@ -101,19 +128,20 @@ def main():
             if keys[pygame.K_r]:
                 board = chess.new_board()
                 player = 'w'
-                
+
                 text = FONT.render(
                     players[player] + '\'s turn!', 1, (10, 10, 10))
                 redraw_window(win, board, player, text)
             if pygame.mouse.get_pressed()[0]:
                 text = FONT.render(
                     players[player] + '\'s turn!', 1, (10, 10, 10))
-                #(player)
+                # (player)
                 try:
-                    count += 1
 
                     if count % 2 != 0:
                         start = get_col_row(board)
+                        
+                        count += 1
                         if player == 'w':
                             player = 'b'
                         elif player == 'b':
@@ -130,15 +158,17 @@ def main():
                     elif count % 2 == 0:
                         finish = get_col_row(board)
                         #('finish', finish)
-                        
-                        board, count, valid = chess.move(board, start, finish, count)
-                        if valid != False:
+
+                        board, count, valid = chess.move(
+                            board, start, finish)
+                        if valid:
                             ans = chess.won(board)
-                            #(ans)
-                            if ans != False:
+                            # (ans)
+                            if ans:
                                 text = FONT.render(
                                     ans, 1, (10, 10, 10))
-                                win.blit(text, (WIDTH - text.get_width() + 200, 395))
+                                win.blit(
+                                    text, (WIDTH - text.get_width() + 200, 395))
                                 run = False
                         else:
                             count += 1
@@ -147,13 +177,15 @@ def main():
                             elif player == 'b':
                                 player = 'w'
 
-                        
-
                 except Exception as e:
+                    print(e)
                     count -= 1
+                    text = FONT.render(
+                    'try again', 1, (10, 10, 10))
                     pass
 
     pygame.quit()
 
-#finally putting everything together and running the magic!
+
+# finally putting everything together and running the magic!
 main()
