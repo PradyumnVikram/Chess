@@ -37,7 +37,7 @@ def won(board):
 # move the piece
 
 
-def move(board, start, finish, count):
+def move(board, start, finish):
     if start != None:
         diffx = start[0] - finish[0]
         diffy = start[1] - finish[1]
@@ -48,9 +48,9 @@ def move(board, start, finish, count):
             else:
                 board[start[0]][start[1]] = 'es'
             board[finish[0]][finish[1]] = piece
-            return board, count, True
+            return board, True
         else:
-            return board, count, False
+            return board, False
 
 # check for:
 # bishop - b
@@ -173,6 +173,8 @@ def is_valid(board, piece, start, finish):
                                     return False
                         return True
     if piece[1] == 'r':
+        print(start)
+        print(finish)
         if board[finish[0]][finish[1]][0] != piece[0]:
             if start[0] == finish[0]:
                 if start[1] < finish[1]:
@@ -193,8 +195,11 @@ def is_valid(board, piece, start, finish):
                     return True
 
                 else:
-                    for row in range(finish[0]+1, start[0]-1):
+                    print('in')
+                    for row in range(finish[0]-1, start[0]+1):
+                        print(row)
                         if board[row][start[1]] != 'es':
+                            print('in deep')
                             return False
                     return True
     if piece[1] == 'b':
